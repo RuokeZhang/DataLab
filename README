@@ -62,6 +62,13 @@ To compile and run the btest program, type:
     unix> make btest
     unix> ./btest [optional cmd line args]
 
+RUOKE: I encountered this error at first 
+"/usr/include/stdio.h:27:10: fatal error: bits/libc-header-start.h: No such file or directory
+   27 | #include <bits/libc-header-start.h>"
+Checking Makefile, The -m32 is telling gcc to compile for a 32-bit platform. But I'm on a 64-bit platform
+So I solved this by running "sudo apt-get install gcc-multilib", it install 32-bit headers and libraries for me.
+
+
 You will need to recompile btest each time you change your bits.c
 program. When moving from one platform to another, you will want to
 get rid of the old version of btest and generate a new one.  Use the

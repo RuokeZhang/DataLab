@@ -45,7 +45,7 @@ INTEGER CODING RULES:
   1. Integer constants 0 through 255 (0xFF), inclusive. You are
       not allowed to use big constants such as 0xffffffff.
   2. Function arguments and local variables (no global variables).
-  3. Unary integer operations ! ~
+  3. Unary integer operations ! ~(One's complement or Bitwise Complement)
   4. Binary integer operations & ^ | + << >>
     
   Some of the problems restrict the set of allowed operators even further.
@@ -141,9 +141,15 @@ NOTES:
  *   Legal ops: ~ &
  *   Max ops: 14
  *   Rating: 1
+ 4=100, ~4=001
+ 5=101, ~5=010
+ 4 & ~5=000
+ 5 & ~4=001
  */
+
 int bitXor(int x, int y) {
-  return 2;
+  //XOR: (~X & Y) | (X & ~Y)=~ ~[(~X & Y) | (X & ~Y)]= ~ [~(~X & Y) & ~(X &~Y)]
+  return ~(~(~x & y) & ~(x & ~y));
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -152,8 +158,8 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
-
-  return 2;
+  //10000...
+  return 1<<31;
 
 }
 //2
@@ -165,7 +171,8 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  return 2;
+  //011111...
+  return x==~(1<<31);
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -176,7 +183,12 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+  //1A1A 1A1A 1A1A 1A1A 1A1A 1A1A 1A1A 1A1A
+  //A can be either 0 or 1
+  //do & to mask(1010 1010 1010 1010 1010 1010 1010 1010 and) x, if result is equal to mask, true
+  int mask=0xAAAAAAAA;
+
+  return (mask&x)==mask;
 }
 /* 
  * negate - return -x 
