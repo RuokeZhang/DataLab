@@ -172,18 +172,18 @@ int tmin(void) {
  */
 int isTmax(int x) {
   //assume input is 7(0111), which is the max 2's complement number in 4-bits case
-  //printf("input x is %d\n", x);
+  printf("input x is %d\n", x);
 
   //this will yiled 1000, which is -8
   int xPlus1=x+1;
-  //printf("xPlus1 is %d\n", xPlus1);
+  printf("xPlus1 is %d\n", xPlus1);
 
   //then we do 0111+1000=1111, this is actually -1
   int x_Plus_xPlus1=xPlus1+x;
-  //printf("x_Plus_xPlus1 is %d\n", x_Plus_xPlus1);
+  printf("x_Plus_xPlus1 is %d\n", x_Plus_xPlus1);
 
   //reverse all the digits, it will definitely give 0000. thus, !0000=0001.
-  //printf("x_Plus_xPlus1 is %d\n\n", ~x_Plus_xPlus1);
+  printf("x_Plus_xPlus1 is %d\n\n", ~x_Plus_xPlus1);
 
   //if the input is -1(1111), we don't want the true result
   //xPlus1 can't be 0000
@@ -204,8 +204,15 @@ TODO: coding rule
 int allOddBits(int x) {
 
   //do & to mask(1010 1010 1010 1010 1010 1010 1010 1010 and) x, if result is equal to mask, true
-  int mask=0xAAAAAAAA;
-  return (mask&x)==mask;
+  int m=0xAA;//1010 1010
+  int m1=m<<8;//1010 1010 0000 0000
+  int m2=m | m1;//1010 1010 1010 1010
+  int m3=m2<<16;
+  int mask=m3 | m2;
+  //return (x&mask)==mask;
+  int res=(x&mask)^mask;//res should be all 0
+  return !res;
+
 }
 
 /* 
@@ -232,10 +239,15 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  // input is a hex：0x30
+    // Step 1: Check if x is greater than or equal to 0x30
+    // Step 2: Check if x is less than or equal to 0x39
+    int lowerBound = x + (~0x30 + 1);  // x - 0x30
+    int upperBound = 0x39 + (~x + 1);  // 0x39 - x
 
-  return 0;
+    // If both lowerBound and upperBound are non-negative, x is in the range
+    return !(lowerBound >> 31) & !(upperBound >> 31);
 }
+
 /* 
  * conditional - same as x ? y : z 
  *   Example: conditional(2,4,5) = 4
