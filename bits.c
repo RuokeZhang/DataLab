@@ -163,7 +163,7 @@ int tmin(void) {
 
 }
 //2
-/*
+/* TODO: coding style
  * isTmax - returns 1 if x is the maximum, two's complement number,
  *     and 0 otherwise 
  *   Legal ops: ! ~ & ^ | +
@@ -171,10 +171,29 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  //011111...
-  return x==~(1<<31);
+  //assume input is 7(0111), which is the max 2's complement number in 4-bits case
+  //printf("input x is %d\n", x);
+
+  //this will yiled 1000, which is -8
+  int xPlus1=x+1;
+  //printf("xPlus1 is %d\n", xPlus1);
+
+  //then we do 0111+1000=1111, this is actually -1
+  int x_Plus_xPlus1=xPlus1+x;
+  //printf("x_Plus_xPlus1 is %d\n", x_Plus_xPlus1);
+
+  //reverse all the digits, it will definitely give 0000. thus, !0000=0001.
+  //printf("x_Plus_xPlus1 is %d\n\n", ~x_Plus_xPlus1);
+
+  //if the input is -1(1111), we don't want the true result
+  //xPlus1 can't be 0000
+
+  //return !(~x_Plus_xPlus1) && xPlus1;
+  return (!!(!~x_Plus_xPlus1)) & (!!xPlus1);
+
 }
 /* 
+TODO: coding rule
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
  *   where bits are numbered from 0 (least significant) to 31 (most significant)
  *   Examples allOddBits(0xFFFFFFFD) = 0, allOddBits(0xAAAAAAAA) = 1
@@ -183,13 +202,12 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  //1A1A 1A1A 1A1A 1A1A 1A1A 1A1A 1A1A 1A1A
-  //A can be either 0 or 1
+
   //do & to mask(1010 1010 1010 1010 1010 1010 1010 1010 and) x, if result is equal to mask, true
   int mask=0xAAAAAAAA;
-
   return (mask&x)==mask;
 }
+
 /* 
  * negate - return -x 
  *   Example: negate(1) = -1.
@@ -198,7 +216,10 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  //2=00...0010
+  //-2=00...0010->11...1101->11...1111
+  int reverse=~x;
+  return reverse+1;
 }
 //3
 /* 
@@ -211,7 +232,9 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  return 2;
+  // input is a hex：0x30
+
+  return 0;
 }
 /* 
  * conditional - same as x ? y : z 
